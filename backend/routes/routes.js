@@ -21,7 +21,7 @@ var router = express.Router();
 let uid = null; // Define uid globally
 
 /* The code snippet you provided is defining a POST route at '/signup' in an Express router. When a
-POST request is made to this route, it expects the request body to contain 'email' and 'uid' fields. */
+  POST request is made to this route, it expects the request body to contain 'email' and 'uid' fields. */
 // const User =  jsonSchema// Changed User to Resume
 
 router.post("/signup", async (req, res) => {
@@ -321,23 +321,7 @@ router.get("/admin/home", async (req, res) => {
   }
 });
 
-// Route for filtering users based on skills and CGPA
-router.post("/admin/filter", async (req, res) => {
-  try {
-    const { skills, cgpa } = req.body;
 
-    // Implement logic to filter users based on skills and CGPA
-    // Example logic:
-    let filteredUsers = await jsonSchema.find({
-      skills: { $in: skills },
-      cgpa: { $gte: cgpa },
-    });
-    res.status(200).json({ filteredUsers });
-  } catch (error) {
-    console.error("Error filtering users:", error);
-    res.status(500).json({ error: "Error filtering users" });
-  }
-});
 
 const getLatestParsedResume = async (useId) => {
   try {
@@ -381,5 +365,54 @@ router.get("/user/:uid/resume/latest", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
+
+router.delete("/resume/delete/:fileName", async (req, res) => {
+  const { fileName } = req.params; // Extract file name from request parameters
+
+  try {
+    // Find the user based on the provided UID
+    const user = await jsonSchema.findOne({ uid: uid });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Find the index of the resume with the specified file name
+    const resumeIndex = user.resumes.findIndex(
+      (resume) => resume.file_name === fileName
+    );
+
+    if (resumeIndex === -1) {
+      return res.status(404).json({ error: "Resume not found for the user" });
+    }
+
+    // Remove the resume from the user's resumes array
+    user.resumes.splice(resumeIndex, 1);
+
+    // Remove the uploaded file entry associated with the resume
+    const uploadedFileIndex = user.uploaded_files.findIndex(
+      (file) => file.file_name === fileName
+    );
+
+    if (uploadedFileIndex !== -1) {
+      // If the uploaded file entry exists, remove it
+      user.uploaded_files.splice(uploadedFileIndex, 1);
+    }
+
+    // Save the updated user data
+    await user.save();
+
+    // Respond with success message
+    res.status(200).json({ message: "Resume deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting resume:", error);
+    res.status(500).json({ error: "Error deleting resume" });
+  }
+});
+
+// Route for filtering users based on skills and CGPA
+
+
 
 export default router;

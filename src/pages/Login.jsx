@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const Login = ({ onLogin }) => { // Pass onLogin function as a prop
+const Login = ({ onLogin, darkMode }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(''); // State to hold isAdmin status as a string
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
@@ -17,51 +15,40 @@ const Login = ({ onLogin }) => { // Pass onLogin function as a prop
         email,
         password
       });
-  
-      console.log("Server response:", response.data); // Log the entire response to check if isAdmin field is present
-  
-      setLoggedIn(true);
-      setError(null);
-      // Call onLogin function and pass email as an argument
-      const adminStatus = response.data.is_Admin ? 'Yes' : 'No'; // Convert isAdmin status to string
-      setIsAdmin(adminStatus);
-      console.log("isAdmin:", adminStatus); // Log isAdmin status after setting it
-      onLogin(email , adminStatus); 
-      // Redirect to home page
+      const isAdmin = response.data.is_Admin ? 'Yes' : 'No';
+      onLogin(email, isAdmin);
       navigate("/home");
     } catch (error) {
-      console.error('Error logging in:', error.response.data.error);
-      setError(error.response.data.error);
-      setLoggedIn(false);
+      setError(error.response?.data?.error || 'Login failed');
     }
   };
 
-
   return (
-    <div className="max-w-md mx-auto p-4 border border-gray-300 rounded">
-      <h2 className="text-2xl mb-4">Login</h2>
-      <form onSubmit={handleSubmit} className="flex flex-col">
+    <div className={`max-w-md mx-auto p-6 ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-800'} shadow-md rounded-lg`}>
+      <h2 className="text-2xl font-semibold text-center mb-6">Login</h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="text"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="mb-4 p-2 border border-gray-300 rounded"
+          className={`w-full p-3 border ${darkMode ? 'border-gray-600' : 'border-gray-300'} rounded focus:outline-none focus:ring-2 ${darkMode ? 'focus:ring-blue-400' : 'focus:ring-blue-500'} transition duration-200`}
         />
         <input
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="mb-4 p-2 border border-gray-300 rounded"
+          className={`w-full p-3 border ${darkMode ? 'border-gray-600' : 'border-gray-300'} rounded focus:outline-none focus:ring-2 ${darkMode ? 'focus:ring-blue-400' : 'focus:ring-blue-500'} transition duration-200`}
         />
-        <button type="submit" className="py-2 px-4 bg-blue-500 text-white rounded cursor-pointer">Login</button>
+        <button type="submit" className={`w-full py-3 ${darkMode ? 'bg-blue-700 hover:bg-blue-800' : 'bg-blue-500 hover:bg-blue-600'} text-white rounded focus:outline-none focus:ring-2 ${darkMode ? 'focus:ring-blue-800' : 'focus:ring-blue-500'} focus:ring-opacity-50 transition duration-200`}>
+          Login
+        </button>
       </form>
-      {error && <p className="text-red-500">{error}</p>}
-      <p className="mt-4">Don't have an account? <a href="/app/signup" className="text-blue-500">Signup</a></p>
-      
-      {/* Display isAdmin status */}
-      {loggedIn && <p className="mt-4">Admin status: {isAdmin}</p>}
+      {error && <p className="mt-4 text-center" style={{ color: darkMode ? 'red-300' : 'red-500' }}>{error}</p>}
+      <p className="mt-6 text-center">
+        Don't have an account? <a href="/app/signup" className={`hover:underline ${darkMode ? 'text-blue-400' : 'text-blue-500'}`}>Signup</a>
+      </p>
     </div>
   );
 };

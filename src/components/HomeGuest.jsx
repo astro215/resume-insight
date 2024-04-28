@@ -1,4 +1,7 @@
 import React from "react";
+import FeatureSection from "./FeatureSection.jsx";
+import images from "../assets/index.js";
+
 
 const HomeGuest = ({ darkMode }) => {
   return (
@@ -19,36 +22,7 @@ const HomeGuest = ({ darkMode }) => {
       </section>
 
       {/* Features Section */}
-      <section className={`container mx-auto px-4 py-16 ${darkMode ? 'bg-gray-900' : 'bg-white'}`}>
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-2">
-            Features
-          </h2>
-          <p className={`${darkMode ? 'text-gray-400' : 'text-gray-700'}`}>
-            Our platform offers a range of features to help recruiters find the best candidates quickly and efficiently.
-          </p>
-        </div>
-        <div className="flex flex-wrap -mx-3">
-          {/* Feature cards are iterated for each feature */}
-          {["Advanced Resume Parser", "Easy Candidate Search", "Resume Storage"].map((feature, index) => (
-            <div key={index} className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-              <div className={`${darkMode ? 'bg-gray-700' : 'bg-gray-200'} p-6 rounded-lg shadow-md text-center`}>
-                <img
-                  src={`https://source.unsplash.com/1600x900/?${feature.replace(/\s/g, '-')}`}
-                  alt={feature}
-                  className="w-16 h-16 mx-auto mb-4 rounded-full"
-                />
-                <h3 className="text-xl font-bold mb-2">
-                  {feature}
-                </h3>
-                <p>
-                  Description specific to each feature.
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      <FeatureSection darkMode={darkMode} />
 
       {/* Selection and Storage Sections */}
       <section className={`container mx-auto px-4 py-16 ${darkMode ? 'bg-gray-900 ' : 'bg-white '}`}>
@@ -63,7 +37,7 @@ const HomeGuest = ({ darkMode }) => {
           </div>
           <div className="w-full md:w-1/2 px-3">
             <img
-              src="https://source.unsplash.com/1600x900/?resume,job-search"
+              src={images.img_1}
               alt="Resume Insights"
               className="w-full h-auto rounded-lg shadow-md"
             />
@@ -75,7 +49,7 @@ const HomeGuest = ({ darkMode }) => {
         <div className="flex flex-wrap items-center -mx-3">
           <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             <img
-              src="https://source.unsplash.com/1600x900/?recruiter,job-search"
+              src={images.img_3}
               alt="Resume Insights for Recruiters"
               className="w-full h-auto rounded-lg shadow-md"
             />
@@ -91,7 +65,7 @@ const HomeGuest = ({ darkMode }) => {
         </div>
       </section>
 
-      <section className="container mx-auto px-4 py-16">
+      <section className={`container mx-auto px-4 py-16 ${darkMode ? 'bg-gray-900' : 'bg-white'}`}>
         <div className="flex flex-wrap items-center -mx-3">
           <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             <h2 className="text-3xl font-bold mb-2">
@@ -103,7 +77,7 @@ const HomeGuest = ({ darkMode }) => {
           </div>
           <div className="w-full md:w-1/2 px-3">
             <img
-              src="https://source.unsplash.com/1600x900/?resume-parser"
+              src={images.img_2}
               alt="Advanced Resume Parsing"
               className="w-full h-auto rounded-lg shadow-md"
             />

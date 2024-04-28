@@ -32,14 +32,14 @@ const Login = ({ onLogin, darkMode }) => {
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className={`w-full p-3 border ${darkMode ? 'border-gray-600' : 'border-gray-300'} rounded focus:outline-none focus:ring-2 ${darkMode ? 'focus:ring-blue-400' : 'focus:ring-blue-500'} transition duration-200`}
+          className={`w-full p-3 border ${darkMode ? 'border-gray-600' : 'border-gray-300'} ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-800'} rounded focus:outline-none focus:ring-2 ${darkMode ? 'focus:ring-blue-400' : 'focus:ring-blue-500'} transition duration-200`}
         />
         <input
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className={`w-full p-3 border ${darkMode ? 'border-gray-600' : 'border-gray-300'} rounded focus:outline-none focus:ring-2 ${darkMode ? 'focus:ring-blue-400' : 'focus:ring-blue-500'} transition duration-200`}
+          className={`w-full p-3 border ${darkMode ? 'border-gray-600' : 'border-gray-300'} ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-800'} rounded focus:outline-none focus:ring-2 ${darkMode ? 'focus:ring-blue-400' : 'focus:ring-blue-500'} transition duration-200`}
         />
         <button type="submit" className={`w-full py-3 ${darkMode ? 'bg-blue-700 hover:bg-blue-800' : 'bg-blue-500 hover:bg-blue-600'} text-white rounded focus:outline-none focus:ring-2 ${darkMode ? 'focus:ring-blue-800' : 'focus:ring-blue-500'} focus:ring-opacity-50 transition duration-200`}>
           Login

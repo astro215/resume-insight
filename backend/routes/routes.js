@@ -1,6 +1,5 @@
 import express from "express";
 import jsonSchema from "../models/jsonSchema.js";
-import resumeSchema from "../models/resumeSchema.js";
 import multer from "multer";
 import axios from "axios";
 import FormData from "form-data";
@@ -411,8 +410,38 @@ router.delete("/resume/delete/:fileName", async (req, res) => {
   }
 });
 
-// Route for filtering users based on skills and CGPA
 
+
+
+const getResumeByUserAndFileName = async (email, fileName) => {
+  try {
+      const user = await jsonSchema.findOne({ email: email });
+      if (!user) {
+          console.log("User not found");
+          return null;
+      }
+      const resume = user.resumes.find(resume => resume.file_name === fileName);
+      if (!resume) {
+          console.log("Resume not found");
+          return null;
+      }
+      return resume;
+  } catch (error) {
+      console.error("Error fetching resume:", error);
+      return null;
+  }
+};
+
+
+// Route to get a specific resume based on user ID and file name
+router.get("/user/:email/resume/:fileName", async (req, res) => {
+    const { email, fileName } = req.params;
+    const resume = await getResumeByUserAndFileName(email, fileName);
+    if (!resume) {
+        return res.status(404).json({ error: "Resume not found" });
+    }
+    res.status(200).json(resume);
+});
 
 
 export default router;

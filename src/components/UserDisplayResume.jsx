@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const UserResume = ({ userId, onClose, darkMode }) => {
+const UserDisplayResume = ({ email, fileName, onClose, darkMode }) => {
   const [resume, setResume] = useState(null);
 
   useEffect(() => {
-    fetchResume();
-  }, [userId]); // Ensure dependency on userId for correct updates
+    if (email && fileName) {
+      fetchResume();
+    }
+  }, [email, fileName]); // Ensure dependency on both email and fileName
 
   const fetchResume = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/app/user/${userId}/resume/latest`
+        `http://localhost:4000/app/user/${email}/resume/${fileName}`
       );
-      setResume(response.data.parsed_resume);
+      setResume(response.data.parsed_json_resume);
+      console.log("Resume data:", response.data.parsed_json_resume);
     } catch (error) {
       console.error("Error fetching user resume:", error);
     }
@@ -98,4 +101,4 @@ const UserResume = ({ userId, onClose, darkMode }) => {
   );
 };
 
-export default UserResume;
+export default UserDisplayResume;

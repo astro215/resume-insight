@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Route, BrowserRouter as Router, Routes, Navigate } from "react-router-dom";
-import Signup from "./pages/Signup";
-import Login from "./pages/Login";
-import Navbar from "./pages/Navbar";
-import HomeGuest from "./pages/HomeGuest";
-import HomeLoggedIn from "./pages/HomeLoggedIn";
-import AdminHome from "./pages/AdminHome";
-import Footer from "./pages/Footer";
+import Signup from "./components/Signup";
+import Login from "./components/Login";
+import Navbar from "./components/Navbar";
+import HomeGuest from "./components/HomeGuest";
+import HomeLoggedIn from "./components/HomeLoggedIn";
+import AdminHome from "./components/AdminHome";
+import Footer from "./components/Footer";
 import 'bootstrap/dist/css/bootstrap.min.css'; // Ensure Bootstrap is imported
 
 const App = () => {
@@ -60,7 +60,7 @@ const App = () => {
             <Route path="/" element={loggedIn ? <Navigate to="/home" /> : <HomeGuest darkMode={darkMode}/>} />
             <Route path="/app/login" element={loggedIn ? <Navigate to="/home" /> : <Login onLogin={handleLogin} darkMode={darkMode} />} />
             <Route path="/app/signup" element={<Signup darkMode={darkMode} />} />
-            <Route path="/home" element={loggedIn ? (isAdmin === "Yes" ? <AdminHome darkMode={darkMode} /> : <HomeLoggedIn darkMode={darkMode} />) : <HomeGuest darkMode={darkMode} />} />
+            <Route path="/home" element={loggedIn ? (isAdmin === "Yes" ? <AdminHome darkMode={darkMode} /> : <HomeLoggedIn darkMode={darkMode } email={userEmail} />) : <HomeGuest darkMode={darkMode} />} />
           </Routes>
         </div>
         <Footer />
